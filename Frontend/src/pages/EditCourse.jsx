@@ -1,26 +1,42 @@
-//AddCourse.jsx
-import React, { useState } from "react";
+//EditCourse.jsx
+import React, { useEffect, useState } from "react";
 import api from "../api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-function AddCourse() {
+function EditCourse() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
 
-  const navigate = useNavigate();
+  const getCourse = async () => {
+    try {
+      const res = await api.get(`/courses/${id}`);
+      setTitle(res.data.title);
+      setDescription(res.data.description);
+      setPrice(res.data.price);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    getCourse();
+  }, []);
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     try {
-      await api.post("/courses/", {
+      await api.put(`/courses/${id}`, {
         title,
         description,
         price: Number(price),
       });
 
-      alert("Course Added Successfully ✅");
+      alert("Course Updated Successfully ✅");
       navigate("/courses");
     } catch (err) {
       console.log(err);
@@ -29,35 +45,32 @@ function AddCourse() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Add Course ➕</h2>
+      <h2>Edit Course ✏️</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUpdate}>
         <input
-          placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <br /><br />
 
         <input
-          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         <br /><br />
 
         <input
-          placeholder="Price"
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
         <br /><br />
 
-        <button type="submit">Create Course</button>
+        <button type="submit">Update Course</button>
       </form>
     </div>
   );
 }
 
-export default AddCourse;
+export default EditCourse;
