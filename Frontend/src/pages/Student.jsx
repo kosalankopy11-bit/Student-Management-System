@@ -1,38 +1,44 @@
+import { useState } from "react";
 import StudentStats from "../../components/students/StudentStats";
 import StudentToolbar from "../../components/students/StudentToolbar";
-import StudentTable from "../../components/students/StudentTable";
 
-export default function Students() {
+const Students = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [courseFilter, setCourseFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+
+  const handleAddStudent = () => {
+    console.log("Navigate to Add Student page");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-8">
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-800">
+          Students
+        </h1>
 
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">
-            Students
-          </h1>
-
-          <p className="text-gray-500 mt-1">
-            Manage all registered students.
-          </p>
-        </div>
-
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow"
-        >
-          + Add Student
-        </button>
-
+        <p className="text-gray-500 mt-2">
+          Manage all registered students
+        </p>
       </div>
 
       <StudentStats />
 
-      <StudentToolbar />
-
-      <StudentTable />
+      <StudentToolbar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        courseFilter={courseFilter}
+        setCourseFilter={setCourseFilter}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        onAddStudent={handleAddStudent}
+      />
 
     </div>
   );
-}
+};
+
+export default Students;
