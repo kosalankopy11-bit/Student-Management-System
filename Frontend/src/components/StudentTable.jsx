@@ -1,112 +1,161 @@
-import { Pencil, Trash2 } from "lucide-react";
+import {
+  FiEye,
+  FiEdit2,
+  FiTrash2,
+} from "react-icons/fi";
 
-const formatDate = (value) => {
-  if (!value) return "-";
-  return new Date(value).toLocaleDateString();
-};
+const StudentTable = ({ students = [] }) => {
 
-const StudentTable = ({ students, loading, onEdit, onDelete }) => {
-  if (loading) {
+  if (students.length === 0) {
     return (
-      <div className="rounded-3xl bg-white p-10 text-center text-slate-500 shadow-sm">
-        Loading students...
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center">
+        <h2 className="text-2xl font-semibold text-gray-700">
+          No Students Found
+        </h2>
+
+        <p className="text-gray-500 mt-2">
+          Try adjusting your search or add a new student.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-slate-200">
-          <thead className="bg-slate-50">
+
+        <table className="min-w-full">
+
+          {/* Table Header */}
+
+          <thead className="bg-gray-100">
+
             <tr>
-              <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Student</th>
-              <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Student ID</th>
-              <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Contact</th>
-              <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Class</th>
-              <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">DOB</th>
-              <th className="px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-slate-500">Status</th>
-              <th className="px-5 py-4 text-right text-xs font-bold uppercase tracking-wide text-slate-500">Actions</th>
+
+              <th className="px-6 py-4 text-left">Student</th>
+
+              <th className="px-6 py-4 text-left">Phone</th>
+
+              <th className="px-6 py-4 text-left">Course</th>
+
+              <th className="px-6 py-4 text-left">Status</th>
+
+              <th className="px-6 py-4 text-center">Actions</th>
+
             </tr>
+
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white">
-            {students.length === 0 ? (
-              <tr>
-                <td colSpan="7" className="px-5 py-12 text-center text-sm text-slate-500">
-                  No students found.
+
+          <tbody>
+
+            {students.map((student) => (
+
+              <tr
+                key={student.id}
+                className="border-t hover:bg-gray-50 transition"
+              >
+
+                {/* Student */}
+
+                <td className="px-6 py-5">
+
+                  <div className="flex items-center gap-4">
+
+                    <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+
+                      {student.name
+                        .split(" ")
+                        .map(word => word[0])
+                        .join("")}
+
+                    </div>
+
+                    <div>
+
+                      <h3 className="font-semibold text-gray-800">
+                        {student.name}
+                      </h3>
+
+                      <p className="text-gray-500 text-sm">
+                        {student.email}
+                      </p>
+
+                    </div>
+
+                  </div>
+
                 </td>
+
+                {/* Phone */}
+
+                <td className="px-6 py-5">
+                  {student.phone}
+                </td>
+
+                {/* Course */}
+
+                <td className="px-6 py-5">
+
+                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+
+                    {student.course}
+
+                  </span>
+
+                </td>
+
+                {/* Status */}
+
+                <td className="px-6 py-5">
+
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      student.status === "Active"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {student.status}
+                  </span>
+
+                </td>
+
+                {/* Actions */}
+
+                <td className="px-6 py-5">
+
+                  <div className="flex justify-center gap-3">
+
+                    <button className="text-blue-600 hover:bg-blue-100 p-2 rounded-lg">
+                      <FiEye />
+                    </button>
+
+                    <button className="text-green-600 hover:bg-green-100 p-2 rounded-lg">
+                      <FiEdit2 />
+                    </button>
+
+                    <button className="text-red-600 hover:bg-red-100 p-2 rounded-lg">
+                      <FiTrash2 />
+                    </button>
+
+                  </div>
+
+                </td>
+
               </tr>
-            ) : (
-              students.map((student) => (
-                <tr key={student._id} className="transition hover:bg-slate-50">
-                  <td className="whitespace-nowrap px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      {student.imageUrl ? (
-                        <img
-                          src={student.imageUrl}
-                          alt={`${student.firstName} ${student.lastName}`}
-                          className="h-12 w-12 rounded-2xl object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-sm font-bold text-blue-700">
-                          {student.firstName?.[0] || "S"}
-                          {student.lastName?.[0] || ""}
-                        </div>
-                      )}
-                      <div>
-                        <p className="font-semibold text-slate-900">
-                          {student.firstName} {student.lastName}
-                        </p>
-                        <p className="text-xs text-slate-500">{student.gender || "-"}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-4 text-sm font-medium text-slate-700">{student.studentId}</td>
-                  <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600">
-                    <p>{student.email}</p>
-                    <p className="text-xs text-slate-400">{student.phone || "-"}</p>
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600">{student.className}</td>
-                  <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600">{formatDate(student.dateOfBirth)}</td>
-                  <td className="whitespace-nowrap px-5 py-4">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-bold ${
-                        student.status === "Active"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-slate-100 text-slate-600"
-                      }`}
-                    >
-                      {student.status}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      <button
-                        type="button"
-                        onClick={() => onEdit(student)}
-                        className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                      >
-                        <Pencil size={14} />
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => onDelete(student)}
-                        className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700"
-                      >
-                        <Trash2 size={14} />
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
+
+            ))}
+
           </tbody>
+
         </table>
+
       </div>
+
     </div>
   );
+
 };
 
 export default StudentTable;
