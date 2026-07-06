@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
-from models.profile import Profile
-from schemas.profile import ProfileUpdate
+from app.models.profile import Profile
+from app.schemas.profile import ProfileUpdate
 
 
 def get_profile_by_user(db: Session, user_id: int) -> Profile:
