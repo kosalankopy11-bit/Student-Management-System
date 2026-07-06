@@ -12,12 +12,11 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <Login/>
-        < Registration/>
-      </div>
-    </>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Login />} />
+    </Routes>
+  </BrowserRouter>
   )
 }
 
