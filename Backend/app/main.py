@@ -2,13 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
-
-
 from app.routers.auth import router as auth_router
 from app.routers.student import router as student_router
 from app.routers.course import router as course_router
 from app.routers.profile_page import router as profile_router
-# from app.routers.dashboard_router import router as dashboard_router
 
 # Create FastAPI App
 app = FastAPI(
@@ -63,8 +60,7 @@ def database_test():
         }
 
 
-app.include_router(auth, prefix="/api")
+app.include_router(auth_router, prefix="/api")
 app.include_router(student_router, prefix="/api")
 app.include_router(course_router, prefix="/api")
 app.include_router(profile_router, prefix="/api")
-app.include_router(dashboard_router, prefix="/api")

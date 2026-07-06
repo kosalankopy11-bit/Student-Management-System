@@ -6,16 +6,12 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if DATABASE_URL is None:
-    raise ValueError("DATABASE_URL not found in .env file")
-
+DATABASE_URL = os.getenv("DATABASE_URL") or "sqlite:///./student_management.db"
 
 engine = create_engine(
     DATABASE_URL,
-    echo=True,          
-    pool_pre_ping=True  
+    echo=True,
+    pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(
