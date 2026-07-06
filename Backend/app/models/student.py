@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from database import Base
+from Backend.app.database import Base
 
 
 class Student(Base):
