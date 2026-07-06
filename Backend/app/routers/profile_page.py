@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from Backend.app.database import get_db
-from schemas.profile import ProfileOut, ProfileUpdate
-from services import profile_service
-from dependencies import get_current_user
-from models.user import User
+from app.database import get_db
+from app.schemas.profile import ProfileOut, ProfileUpdate
+from app.services import profile_service
+from app.dependencies import get_current_user
+from app.models.user import User
 
-router = APIRouter(prefix="/api/profile", tags=["Profile"])
+router = APIRouter(prefix="/profile", tags=["Profile"])
 
 
 @router.get("/", response_model=ProfileOut)
